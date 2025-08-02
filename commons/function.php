@@ -41,3 +41,20 @@ function deleteFile($file){
         unlink($pathDelete); // Hàm unlink dùng để xóa file
     }
 }
+function loadModel($modelName) {
+    $filePath = PATH_ROOT . "admin/models/" . $modelName . ".php";
+    if (file_exists($filePath)) {
+        require_once $filePath;
+    } else {
+        throw new Exception("Model file not found: " . $filePath);
+    }
+}
+function loadView($viewName, $data = []) {
+    $filePath = PATH_ROOT . "admin/views/" . $viewName . ".php";
+    if (file_exists($filePath)) {
+        extract($data); 
+        require_once $filePath;
+    } else {
+        throw new Exception("View file not found: " . $filePath);
+    }
+}
