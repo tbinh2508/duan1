@@ -32,37 +32,37 @@
     <li class="nav-item active">
         <a class="nav-link " href="{{ route('categories.index') }}">
             <i class="fas fa-fw fa-list"></i>
-            <span>Category</span></a>
+            <span>Danh mục</span></a>
     </li>
     <li class="nav-item active">
         <a class="nav-link " href="{{ route('capacities.index') }}">
             <i class="fas fa-fw fa-folder"></i>
-            <span>Capacity</span></a>
+            <span>Size</span></a>
     </li>
     <li class="nav-item active">
         <a class="nav-link " href="{{ route('colors.index') }}">
             <i class="fas fa fa-certificate"></i>
-            <span>Color</span></a>
+            <span>Màu</span></a>
     </li>
     <li class="nav-item active">
         <a class="nav-link" href="{{ route('products.index') }}">
             <i class="fas fa-fw fa-window-restore"></i>
-            <span>Product</span></a>
+            <span>Sản phẩm</span></a>
     </li>
-    <li class="nav-item active">
+    {{-- <li class="nav-item active">
         <a class="nav-link" href="{{ route('coupons.index') }}">
             <i class="fas fa-fw fa-window-restore"></i>
             <span>Coupon</span></a>
-    </li>
+    </li> --}}
     <li class="nav-item active">
         <a class="nav-link" href="{{ route('dashboard.account') }}">
             <i class="fas fa-users"></i>
-            <span>Account</span></a>
+            <span>Tài khoản</span></a>
     </li>
     <li class="nav-item active">
         <a class="nav-link" href="{{ route('dashboard.cart') }}">
             <i class="fas fa fa-shopping-cart"></i>
-            <span>Cart</span></a>
+            <span>Đơn hàng</span></a>
     </li>
 
 </ul>

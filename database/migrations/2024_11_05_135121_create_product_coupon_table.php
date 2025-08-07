@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Schema::create('product_coupon', function (Blueprint $table) {
-        //     $table->foreignIdFor(Product::class)->constrained();
-        //     $table->foreignIdFor(Coupon::class)->constrained();
-        //     $table->primary(['product_id', 'coupon_id']);
-        // });
+        Schema::create('product_coupon', function (Blueprint $table) {
+            $table->foreignIdFor(Product::class)->constrained();
+            $table->foreignIdFor(Coupon::class)->constrained();
+            $table->primary(['product_id', 'coupon_id']);
+        });
     }
 
     /**
