@@ -53,7 +53,8 @@ class UserController extends Controller
             $user = User::query()->create($request->all());
             Auth::login($user);
             request()->session()->regenerate();
-            return redirect()->route('index');
+            return redirect('/');
+            // return redirect()->route('index');
         } catch (\Throwable $th) {
             Log::debug(__CLASS__ . '@' . __FUNCTION__, [$th->getMessage()]);
             return back()->with('error', 'Lỗi hệ thống !!!');
@@ -65,7 +66,9 @@ class UserController extends Controller
             Auth::logout();
             request()->session()->invalidate();
             request()->session()->regenerateToken();
-            return redirect()->route('index');
+            return redirect('/');
+
+            // return redirect()->route('index');
         } catch (\Throwable $th) {
             Log::debug(__CLASS__ . '@' . __FUNCTION__, [$th->getMessage()]);
             return back()->with('error', 'Lỗi hệ thống !!!');

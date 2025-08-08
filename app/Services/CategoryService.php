@@ -33,6 +33,6 @@ class CategoryService
     // }
     public function pluckCategory($column, $key)
     {
-        return Category::query()->pluck($column, $key);
+        return Category::query()->where('is_active',1)->pluck($column, $key);
     }
 }

@@ -25,6 +25,6 @@ class CapacityService
         return Capacity::query()->find($id)->update($data);
     }
     public function pluckCapacity($column,$key){
-        return Capacity::query()->pluck($column,$key);
+        return Capacity::query()->where('is_active',1)->pluck($column,$key)->all();
     }
 }

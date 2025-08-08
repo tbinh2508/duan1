@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\GeneralController;
+use App\Http\Controllers\Client\OrderController;
+use App\Http\Middleware\CheckAddProductCart;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CapacityController;
 use App\Http\Controllers\Admin\CartController as AdminCartController;
@@ -10,6 +14,10 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Login\UserController;
+use App\Http\Controllers\Mail\OrderMailController;
+use App\Http\Middleware\CheckQuantityCheckOutCart;
+use App\Http\Middleware\CheckQuantityProductCart;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,8 +28,8 @@ use App\Http\Controllers\Login\UserController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// ->middleware(['auth', 'isadmin'])
-Route::prefix('dashboard')->group(function () {
+
+Route::prefix('dashboard')->middleware(['auth', 'isadmin'])->group(function () {
     Route::get('/',         [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/account',  [AdminUserController::class, 'list'])->name('dashboard.account');
@@ -56,12 +64,44 @@ Route::prefix('dashboard')->group(function () {
 
 
 
+Route::prefix('/')->group(function () {
+    Route::get('/', [GeneralController::class, 'index'])->name('index');
+    Route::get('shop', [GeneralController::class, 'shop'])->name('shop');
+
+    Route::get('{detail}/detail', [GeneralController::class, 'detail'])->name('detail');
+    Route::post('search', [GeneralController::class, 'search'])->name('search');
+    Route::post('searchfilter', [GeneralController::class, 'searchfilter'])->name('searchfilter');
+
+    // Route::post('couponscart', [CartController::class, 'couponsCart'])->name('coupons.cart');
+
+    Route::post('addcart', [CartController::class, 'addcart'])->name('addcart')->middleware(['auth', CheckQuantityProductCart::class, CheckAddProductCart::class]);
+    Route::get('listcart', [CartController::class, 'listcart'])->name('listcart')->middleware('auth');
+    Route::delete('{cartitem}/cartitemdelete', [CartController::class, 'cartItemDelete'])->name('cart.delete');
+    Route::delete('{cartitem}/cartitemdeleteall', [CartController::class, 'cartitemdeleteall'])->name('cart.delete.all');
+    Route::get('checkout', [OrderController::class, 'checkout'])->name('checkout');
+    Route::post('checkout', [OrderController::class, 'storeCheckout'])->name('store.checkout')->middleware(CheckQuantityCheckOutCart::class);
+
+    Route::get('listorders', [OrderController::class, 'listorders'])->name('listorders')->middleware(['auth']);
+    Route::get('{order}/orders', [OrderController::class, 'showOrders'])->name('show.orders')->middleware('auth');
+    Route::put('{order}/orders', [OrderController::class, 'ordersCancel'])->name('orders.cancel');
+    Route::post('paymentVnpay', [OrderController::class, 'paymentVnpay'])->name('paymentVnpay');
+    Route::get('/thankyoupayment', [OrderController::class, 'thankyoupayment'])->name('thankyoupayment');
+
+
+    Route::get('{thankyou}/thankyou', [OrderMailController::class, 'sendMailOrders'])->name('thankyou');
+
+    Route::get('about', [GeneralController::class, 'about'])->name('about');
+
+
+    Route::get('contact', [GeneralController::class, 'contact'])->name('contact');
+    Route::get('services', [GeneralController::class, 'services'])->name('services');
+});
 
 
 
 
 
-Route::get('login', [UserController::class, 'showform'])->name('login');
+Route::get('login', [UserController::class, 'showform'])->name('login')->middleware('check_login');
 Route::post('loginpost', [UserController::class, 'login'])->name('loginpost');
 Route::post('registerpost', [UserController::class, 'register'])->name('registerpost');
 Route::post('logout', [UserController::class, 'logout'])->name('logout');

@@ -8,7 +8,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <span style="font-size: 25px" class="m-0 font-weight-bold text-primary">List Orders</span>
+                <span style="font-size: 25px" class="m-0 font-weight-bold text-primary">Danh sách đơn hàng</span>
 
             </div>
             <div class="card-body">
@@ -28,13 +28,13 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Total</th>
-                                <th>Status Orders</th>
-                                <th>Method Payment</th>
-                                <th>Status Payment</th>
-                                <th>Created At</th>
-                                <th>Action</th>
+                                <th>Tên</th>
+                                <th>Tổng</th>
+                                <th>Trạng thái</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Trạng thái Thanh toán</th>
+                                <th>Thời gian</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,19 +49,17 @@
                                     <td> {{ $item->created_at->format('d/m/Y H:i:s') }} </td>
                                     <td style="width: 300px;display: flex">
                                         <a class="btn btn-warning mr-2" href="{{ route('cart.show', $item) }}"
-                                            role="button">Show</a>
+                                            role="button">Xem</a>
                                         <form action="{{ route('cart.update', $item) }}" method="post">
                                             @csrf
                                             @method('PUT')
                                             <input type="hidden" name="status_order" value="{{ $item->status_order }}">
                                             @if ($item->status_order == STATUS_ORDER_CANCELED || $item->status_order == STATUS_ORDER_DELIVERED)
                                                 <button onclick="return confirm('Bạn có chắc chắn cập nhật không !!!')"
-                                                    class="btn btn-success mr-2" disabled type="submit">Update Status
-                                                    Orders</button>
+                                                    class="btn btn-success mr-2" disabled type="submit">Cập nhật</button>
                                             @else
                                                 <button onclick="return confirm('Bạn có chắc chắn cập nhật không !!!')"
-                                                    class="btn btn-success mr-2" type="submit">Update Status
-                                                    Orders</button>
+                                                    class="btn btn-success mr-2" type="submit">Cập nhật</button>
                                             @endif
 
                                         </form>
@@ -74,7 +72,7 @@
 
                                             <button onclick="return confirm('Bạn có chắc chắn hủy không !!!')"
                                             @disabled($item->status_order !== STATUS_ORDER_PENDING || $item->status_order == STATUS_ORDER_CANCELED || $item->status_payment == STATUS_PAYMENT_PAID )
-                                                class="btn btn-danger mr-2" type="submit">Cancel Order</button>
+                                                class="btn btn-danger mr-2" type="submit">Hủy</button>
 
                                         </form>
                                     </td>

@@ -57,7 +57,7 @@ define('STATUS_ORDER_CANCELED', 'canceled');
 
 define('METHOD_PAYMENT_DELIVERY', 'cash_delivery');
 define('METHOD_PAYMENT_VNPAY', 'vnpay_payment');
-define('METHOD_PAYMENT_MOMO', 'momo');
+define('METHOD_PAYMENT_MOMO', 'momo_payment');
 
 
 define('STATUS_PAYMENT_UNPAID', 'unpaid');

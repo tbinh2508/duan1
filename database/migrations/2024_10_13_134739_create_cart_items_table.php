@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Cart;
 use App\Models\ProductVariant;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -13,9 +14,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cart_items', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
+            $table->timestamps();
+        });
+        Schema::create('cart_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Cart::class)->constrained();
             $table->foreignIdFor(ProductVariant::class)->constrained();
             $table->unsignedBigInteger('quantity')->default(0);
             $table->timestamps();
@@ -27,6 +33,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+
         Schema::dropIfExists('cart_items');
+        Schema::dropIfExists('carts');
     }
 };

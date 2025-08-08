@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Repositories\ProductRepocitory;
 
 class ProductService
@@ -15,7 +16,7 @@ class ProductService
 
     public function getFeaturedProduct($limit)
     {
-        return Product::query()->getFeatured($limit);
+        return Product::query()->limit($limit)->get();
     }
     public function createProduct($data)
     {
@@ -35,6 +36,6 @@ class ProductService
     }
     public function productvariantFindbyProduct_id($id, $ralation)
     {
-        return Product::with($ralation)->find($id);
+        return ProductVariant::with($ralation)->where('product_id',$id)->get();
     }
 }

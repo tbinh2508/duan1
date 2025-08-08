@@ -19,5 +19,8 @@ class OrderItem extends Model
         'price_sale',
         'variant_capacity_name',
         'variant_color_name',
+        'address',
+        'email',
+        'phone',
     ];
 }

@@ -42,9 +42,7 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $products = Cache::rememberForever('products',function (){
-            return $this->productService->getProduct(['category']);
-        });
+        $products = $this->productService->getProduct(['category']);
 
         return view('admin.products.index', compact('products'));
     }

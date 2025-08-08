@@ -75,7 +75,7 @@ class DashboardController extends Controller
 
         //Tính doanh thu của từng tháng
         $totalTwMonth = [];
-        for ($i = 0; $i < 12; $i++) {
+for ($i = 0; $i < 12; $i++) {
             // $stMonth = now()->startOfMonthParam($i + 1)->toDateString();
             // $edMonth = now()->endOfMonthParams($i + 1)->toDateString();
 
@@ -98,15 +98,15 @@ class DashboardController extends Controller
         //     ->where('p.deleted_at', null)
         //     ->groupBy('category_id')
         //     ->get();
-        $quantityPro =[];
-        //  = DB::table('product_variants as pv')
+        $quantityPro = [];
+        // DB::table('product_variants as pv')
         //     ->select(DB::raw("SUM(quantity) as quantityproduct"), 'p.name')
         //     ->join('products as p', 'p.id', '=', 'pv.product_id')
         //     ->groupBy('product_id')
         //     ->get();
         //Top 5 sản phẩm bán chạy
         $top5product = [];
-        // = DB::table('order_items as oi')
+        // DB::table('order_items as oi')
         //     ->select(DB::raw("SUM(oi.quantity) as quantity"), 'p.name', 'p.id', 'p.price_regular')
         //     ->join('product_variants as pv', 'pv.id', '=', 'oi.product_variant_id')
         //     ->join('products as p', 'p.id', '=', 'pv.product_id')

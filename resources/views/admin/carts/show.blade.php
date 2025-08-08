@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('title')
-    Category
+    Thông tin chi tiết
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -28,12 +28,12 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>Tên</th>
                                 <th>Email</th>
-                                <th>Phone</th>
-                                <th>Address</th>
-                                <th>Note</th>
-                                <th>Updated At</th>
+                                <th>SĐT</th>
+                                <th>Địa chỉ</th>
+                                <th>Ghi chú</th>
+                                <th>Thời gian</th>
 
                             </tr>
                         </thead>
@@ -58,29 +58,29 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>Sku</th>
-                                <th>Name</th>
-                                <th>Image</th>
-                                <th>Quantity</th>
-                                <th>Price Regular</th>
-                                <th>Capacity</th>
-                                <th>Color</th>
+                                <th>Mã</th>
+                                <th>Tên</th>
+                                <th>Ảnh</th>
+                                <th>Số lượng</th>
+                                <th>Giá</th>
+                                <th>Size</th>
+                                <th>Màu</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data->orderItems as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->product_sku }}</td>
-                                    <td>{{ $item->product_name }}</td>
+                                    <td>{{ $item->sku }}</td>
+                                    <td>{{ $item->name }}</td>
                                     <td>
-                                        @if ($item->product_img_thumbnail)
-                                            <img src="{{ Storage::url($item->product_img_thumbnail) }}" width="100px"
+                                        @if ($item->img_thumbnail)
+                                            <img src="{{ Storage::url($item->img_thumbnail) }}" width="100px"
                                                 height="100px" class="img-thumbnail" alt="">
                                         @endif
                                     </td>
-                                    <td>{{ $item->order_item_quantity }}</td>
-                                    <td>{{ number_format($item->pro_price_regular) }} đ</td>
+                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ number_format($item->price_regular) }} đ</td>
                                     <td>{{ $item->variant_capacity_name }}</td>
                                     <td>{{ $item->variant_color_name }}</td>
                                 </tr>

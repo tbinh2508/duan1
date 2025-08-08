@@ -27,6 +27,6 @@ class ColorService
 
     public function pluckColor($column, $key)
     {
-        return Color::query()->pluck($column, $key);
+        return Color::query()->where('is_active',1)->pluck($column, $key);
     }
 }

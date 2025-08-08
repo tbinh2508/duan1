@@ -8,7 +8,7 @@
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">List Account</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách tài khoản</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -16,10 +16,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>Tên</th>
                                 <th>Email</th>
-                                <th>Role</th>
-                                <th>Action</th>
+                                <th>Vai trò</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -33,16 +33,16 @@
 
                                         @if ($item->type === 'member')
                                             @if ($item->deleted_at) 
-                                                <a href="{{ route('account.setrole', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn cấp quyền admin không !!!')" class="btn btn-success" @disabled(true)>Set role</button></a>
-                                                <a href="{{ route('account.restore', $item->id) }}"><button onclick="return confirm('Bạn có muốn khôi phục tài khoản không !!!')" class="btn btn-primary">Restore</button></a>
+                                                {{-- <a href="{{ route('account.setrole', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn cấp quyền admin không !!!')" class="btn btn-success" @disabled(true)>Set role</button></a>
+                                                <a href="{{ route('account.restore', $item->id) }}"><button onclick="return confirm('Bạn có muốn khôi phục tài khoản không !!!')" class="btn btn-primary">Restore</button></a> --}}
                                             @else
-                                                <a href="{{ route('account.setrole', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn cấp quyền admin không !!!')" class="btn btn-success">Set role</button></a>
-                                                <a href="{{ route('account.destroy', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn ban không !!!')" class="btn btn-warning">Ban</button></a>
+                                                <a href="{{ route('account.setrole', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn cấp quyền admin không !!!')" class="btn btn-success">Cấp quyền admin</button></a>
+                                                {{-- <a href="{{ route('account.destroy', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn ban không !!!')" class="btn btn-warning">Ban</button></a> --}}
                                             @endif
 
-                                            <a href="{{ route('account.delete', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn xóa vĩnh viễn tài khoản này không !!!')" class="btn btn-danger">Delete</button></a>
+                                            {{-- <a href="{{ route('account.delete', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn xóa vĩnh viễn tài khoản này không !!!')" class="btn btn-danger">Delete</button></a> --}}
                                         @else
-                                            <a href="{{ route('account.downgrade', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn downgrade không !!!')" class="btn btn-primary">Downgrade</button></a>
+                                            <a href="{{ route('account.downgrade', $item->id) }}"><button onclick="return confirm('Bạn có chắc chắn downgrade không !!!')" class="btn btn-primary">Chuyển về vai trò member</button></a>
                                         @endif
 
                                     </td>

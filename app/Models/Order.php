@@ -39,7 +39,6 @@ class Order extends Model
         'method_payment',
         'status_payment',
         'order_total_price',
-        'order_sku',
         'sku',
         'slug'
     ];
@@ -50,5 +49,23 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public static function generateCustomRandomString()
+    {
+        $characters = 'abcdefghjklmnpqrstuvwxyz';
+        $charLength = strlen($characters);
+
+        $code = '';
+        for ($i = 0; $i < 13; $i++) {
+            $code .= $characters[rand(0, $charLength - 1)];
+        }
+
+        $formattedCode = substr($code, 0, 3) . '-' .
+            substr($code, 3, 4) . '-' .
+            substr($code, 7, 3) . '-' .
+            substr($code, 10, 3);
+
+        return $formattedCode;
     }
 }
