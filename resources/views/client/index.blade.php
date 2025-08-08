@@ -18,14 +18,20 @@
                     <div class="testimonial-block text-center">
                         <blockquote class="">
 
-                            <img src="{{ '/client/images/03_Mockup_Summer.jpg' }}" width="100%" height="666px"
+                            <img src="{{ '/client/images/burnstore-banner-23-1-1.jpg' }}" width="100%" height="666px"
                                 alt="">
                         </blockquote>
                     </div>
                     <div class="testimonial-block text-center">
                         <blockquote class="">
 
-                            <img src="{{ '/client/images/banner-sale.jpg' }}" width="100%" height="666px" alt="">
+                            <img src="{{ '/client/images/banner-ninja-2.jpg' }}" width="100%" height="666px" alt="">
+                        </blockquote>
+                    </div>
+                          <div class="testimonial-block text-center">
+                        <blockquote class="">
+
+                            <img src="{{ '/client/images/banner-ninja-2.jpg' }}" width="100%" height="666px" alt="">
                         </blockquote>
                     </div>
 
