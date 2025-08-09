@@ -31,7 +31,7 @@
                           <div class="testimonial-block text-center">
                         <blockquote class="">
 
-                            <img src="{{ '/client/images/banner-ninja-2.jpg' }}" width="100%" height="666px" alt="">
+                            <img src="{{ '/client/images/baner3.jpg' }}" width="100%" height="666px" alt="">
                         </blockquote>
                     </div>
 
