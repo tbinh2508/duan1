@@ -1,6 +1,6 @@
 @extends('client.layouts.master')
 @section('document')
-    ShopSieuReOk
+    Shop
 @endsection
 @section('content')
 
@@ -28,6 +28,9 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th style="width:40px;">
+                                        <input type="checkbox" id="checkAll" checked>
+                                    </th>
                                     <th class="product-thumbnail">Ảnh</th>
                                     <th class="product-name">Sản phẩm</th>
                                     <th class="product-price">Giá</th>
@@ -40,7 +43,25 @@
                             </thead>
                             <tbody>
                                 @foreach ($productVariants as $item)
+                                    @php
+                                        $currentCartItem = $item->cartitem->firstWhere('cart_id', $item->cart_id);
+                                    @endphp
                                     <tr>
+                                        <td>
+                                            {{-- @if ($currentCartItem)
+                                                <input type="checkbox" class="row-check" name="selected_cart_item_ids[]"
+                                                    value="{{ $currentCartItem->id }}" checked>
+                                            @endif --}}
+
+                                           
+                                            @if ($currentCartItem)
+                                                <input type="checkbox" class="row-check" name="selected_cart_item_ids[]"
+                                                    value="{{ $currentCartItem->id }}"
+data-update-url="{{ route('cart.update_cart_item', $currentCartItem->id) }}"
+                                                    @if ($currentCartItem->is_check) checked @endif>
+                                            @endif
+
+                                        </td>
                                         <td class="product-thumbnail">
                                             @if ($item->product->img_thumbnail)
                                                 <img src="{{ Storage::url($item->product->img_thumbnail) }}" width="80px"
@@ -85,8 +106,8 @@
                                             </div>
                                         </td>
 
-                                        @if (!empty($item->product->price_sale))
-                                            @foreach ($item->cartitem as $value)
+                                        {{-- @if (!empty($item->product->price_sale))
+@foreach ($item->cartitem as $value)
                                                 @if ($value->cart_id == $item->cart_id)
                                                     <td style="width: 140px">
                                                         {{ number_format($item->product->price_sale * $value->quantity) }}
@@ -103,7 +124,19 @@
                                                     </td>
                                                 @endif
                                             @endforeach
-                                        @endif
+                                        @endif --}}
+
+                                        @php
+                                            $currentCartItem = $item->cartitem->firstWhere('cart_id', $item->cart_id);
+                                            $qty = $currentCartItem?->quantity ?? 0;
+                                            $unitPrice = $item->product->price_sale ?: $item->product->price_regular;
+                                            $rowTotal = (int) $unitPrice * (int) $qty;
+                                        @endphp
+
+                                        <td style="width: 140px">
+                                            <span class="row-total"
+                                                data-total="{{ $rowTotal }}">{{ number_format($rowTotal) }} đ</span>
+                                        </td>
                                         <td>
                                             @foreach ($item->cartitem as $value)
                                                 @if ($value->cart_id == $item->cart_id)
@@ -115,8 +148,7 @@
                                                     </form>
                                                 @endif
                                             @endforeach
-
-                                        </td>
+</td>
                                     </tr>
                                     <form id="myForm" action="{{ route('cart.delete.all', $item->cart_id) }}"
                                         method="post">
@@ -171,54 +203,21 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <span class="text-black">Subtotal</span>
+<span class="text-black">Subtotal</span>
                                     </div>
                                     <div class="col-md-6 text-end">
-                                        <strong class="text-black">{{ number_format($totals) }} đ</strong>
+                                        <strong class="text-black"><span
+                                                id="subtotalAmount">{{ number_format($totals) }}</span> đ</strong>
                                     </div>
                                 </div>
-                                <!-- Discount -->
-                                {{-- @if ($dataCouponsProduct)
-                                    @foreach ($dataCouponsProduct as $item)
-                                        @foreach ($item->cartitem as $value)
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <span class="text-muted">{{ $item->product->name }}</span>
-                                                </div>
-                                                <div class="col-md-6 text-end">
-                                                    @if ($item->product->price_sale)
-                                                        @if ($coupons['discount_type'])
-                                                            <span
-                                                                class="text-danger">-{{ number_format($coupons['discount_value']) }}
-                                                                đ</span>
-                                                        @else
-                                                            <span
-                                                                class="text-danger">-{{ number_format($item->product->price_sale * ($coupons['discount_value'] / 100) * $value->quantity) }}
-                                                                đ</span>
-                                                        @endif
-                                                    @else
-                                                        @if ($coupons['discount_type'])
-                                                            <span
-                                                                class="text-danger">-{{ number_format($coupons['discount_value']) }}
-                                                                đ</span>
-                                                        @else
-                                                            <span
-                                                                class="text-danger">-{{ number_format($item->product->price_regular * ($coupons['discount_value'] / 100) * $value->quantity) }}
-                                                                đ</span>
-                                                        @endif
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    @endforeach
-                                @endif --}}
 
                                 <div class="row mb-4 border-top pt-3">
                                     <div class="col-md-6">
                                         <span class="text-black">Total</span>
                                     </div>
                                     <div class="col-md-6 text-end">
-                                        <strong class="text-black">{{ number_format($totals)}} đ</strong>
+                                        <strong class="text-black"><span
+                                                id="totalAmount">{{ number_format($totals) }}</span> đ</strong>
                                     </div>
                                 </div>
 
@@ -248,4 +247,157 @@
         </div>
     </div>
 
+@endsection
+{{-- @section('script')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(function() {
+            const $checkAll = $('#checkAll');
+            const $subtotal = $('#subtotalAmount');
+            const $total = $('#totalAmount');
+
+            function $rowChecks() {
+                return $('.row-check');
+            }
+
+            function formatVND(num) {
+                try {
+                    return new Intl.NumberFormat('vi-VN').format(num);
+                } catch (e) {
+                    return (num + '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                }
+            }
+
+            function recalcTotals() {
+                let sum = 0;
+                $('.row-check:checked').each(function() {
+                    const $row = $(this).closest('tr');
+                    const val = parseInt($row.find('.row-total').data('total')) || 0;
+                    sum += val;
+                });
+$subtotal.text(formatVND(sum));
+                $total.text(formatVND(sum)); // nếu sau này có phí ship/giảm giá thì cộng/trừ ở đây
+            }
+
+            function syncHeader() {
+                const $rows = $rowChecks();
+                const allChecked = $rows.length > 0 && $rows.filter(':checked').length === $rows.length;
+                $checkAll.prop('checked', allChecked);
+            }
+
+            // Toggle tất cả
+            $checkAll.on('change', function() {
+                $rowChecks().prop('checked', $(this).is(':checked'));
+                recalcTotals();
+            });
+
+            // Tick từng dòng
+            $(document).on('change', '.row-check', function() {
+                syncHeader();
+                recalcTotals();
+            });
+
+            // Khởi tạo
+            $rowChecks().prop('checked', true);
+            $checkAll.prop('checked', true);
+            syncHeader();
+            recalcTotals();
+        });
+    </script>
+@endsection --}}
+
+
+@section('script')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(function() {
+            // CSRF cho AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            const $checkAll = $('#checkAll');
+            const $subtotal = $('#subtotalAmount');
+            const $total = $('#totalAmount');
+
+            function $rowChecks() {
+                return $('.row-check');
+            }
+
+            function formatVND(num) {
+                try {
+                    return new Intl.NumberFormat('vi-VN').format(num);
+                } catch (e) {
+                    return (num + '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                }
+            }
+
+            function recalcTotals() {
+                let sum = 0;
+                $('.row-check:checked').each(function() {
+                    const $row = $(this).closest('tr');
+                    const val = parseInt($row.find('.row-total').data('total')) || 0;
+                    sum += val;
+                });
+                $subtotal.text(formatVND(sum));
+                $total.text(formatVND(sum));
+            }
+
+            function syncHeader() {
+                const $rows = $rowChecks();
+                const allChecked = $rows.length > 0 && $rows.filter(':checked').length === $rows.length;
+                $checkAll.prop('checked', allChecked);
+            }
+
+            // Gọi API cập nhật 1 item
+            function updateCartItem($checkbox) {
+                const url = $checkbox.data('update-url');
+                const is_check = $checkbox.is(':checked') ? 1 : 0;
+                if (!url) return;
+
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: {
+                        is_check: is_check
+                    },
+}).fail(function(xhr) {
+                    // Nếu lỗi, revert checkbox về trạng thái trước
+                    $checkbox.prop('checked', !is_check);
+                    syncHeader();
+                    recalcTotals();
+                    console.error('Update cart item failed:', xhr.responseText || xhr.statusText);
+                });
+            }
+
+            // Toggle tất cả
+            $checkAll.on('change', function() {
+                const checked = $(this).is(':checked');
+                $rowChecks().each(function() {
+                    const $cb = $(this);
+                    const prev = $cb.is(':checked');
+                    $cb.prop('checked', checked);
+                    if (prev !== checked) {
+                        updateCartItem($cb); // chỉ gọi API khi trạng thái thực sự thay đổi
+                    }
+                });
+                recalcTotals();
+            });
+
+            // Tick từng dòng
+            $(document).on('change', '.row-check', function() {
+                updateCartItem($(this));
+                syncHeader();
+                recalcTotals();
+            });
+
+            // Khởi tạo
+            // $rowChecks().prop('checked', true);
+            // $checkAll.prop('checked', true);
+            syncHeader();
+            recalcTotals();
+        });
+    </script>
 @endsection

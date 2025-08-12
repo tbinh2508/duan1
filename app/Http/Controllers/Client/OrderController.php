@@ -28,17 +28,22 @@ class OrderController extends Controller
     ) {
         $this->cartService = $cartService;
     }
-    public function checkout()
+public function checkout()
     {
-        $productVariants = $this->cartService->showProductVariantsCart();
+        $productVariants = $this->cartService->showProductVariantsCartCheckout();
+        if (!$productVariants) {
+            return back()->with('error', 'Vui lòng chọn sản phẩm trong giỏ hàng !!!');
+        }
         $totals = 0;
         $carts = Cart::with('cartItems.productVariant.product')->where('user_id', Auth::user()->id)->first();
         foreach ($carts->cartItems ?? [] as $cart) {
-            $totals += ($cart->quantity * ($cart->productVariant->product->price_sale ? $cart->productVariant->product->price_sale : $cart->productVariant->product->price_regular));
+            if ($cart->is_check) {
+                $totals += ($cart->quantity * ($cart->productVariant->product->price_sale ? $cart->productVariant->product->price_sale : $cart->productVariant->product->price_regular));
+            }
         }
 
         return view('client.checkout', compact('productVariants', 'totals'));
-    }
+    }   
 
 
     public function listorders()
