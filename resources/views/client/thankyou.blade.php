@@ -10,8 +10,8 @@
             <div class="row">
                 <div class="col-md-12 text-center pt-5">
                     <span class="display-3 thankyou-icon text-primary">
-                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cart-check mb-5"
-                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-cart-check mb-5" fill="currentColor"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
                                 d="M11.354 5.646a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.293l2.646-2.647a.5.5 0 0 1 .708 0z" />
                             <path fill-rule="evenodd"
