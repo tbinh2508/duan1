@@ -323,16 +323,7 @@ public function checkout()
                 $cart = Cart::query()->where('user_id', $user->id)->first();
                 $cartItem = CartItem::query()->where('cart_id', $cart->id)->where('is_check',1)->get();
                 $productVariants = [];
-                foreach ($cartItem as $item) {
-                    $productVariant = ProductVariant::with(
-                        'capacity',
-                        'color',
-                        'product',
-                        'cartitem'
-                    )->find($item->product_variant_id);
-                    $productVariant->cart_id = $item->cart_id;
-                    $productVariants[] = $productVariant;
-                }
+                
 
                 foreach ($productVariants as $item) {
                     foreach ($item->cartitem as $value) {
