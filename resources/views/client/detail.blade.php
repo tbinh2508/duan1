@@ -62,8 +62,7 @@
                                     autocomplete="off" value="{{ $id }}">
 
                                 <label class="color-box" for="color-{{ $id }}"
-                                    style="background-color: {{ $item }}; 
-                   width: 40px; height: 40px; border-radius: 5px; border: 2px solid #000;"></label>
+                                    style="background-color: {{ $item }};  width: 40px; height: 40px; border-radius: 5px; border: 2px solid #000;"></label>
                             @endforeach
                         </div>
                     </div>
