@@ -18,7 +18,9 @@
 				</div>
 				<div class="col-lg-7">
 					<div class="hero-img-wrap">
-						<img src="/client/images/couch.png" class="img-fluid">
+						<!-- <img src="/client/images/giay2-Photoroom.png" class="img-fluid"> -->
+						<img src="/client/images/Search-Empty.webp" class="">
+
 					</div>
 				</div>
 			</div>

@@ -306,5 +306,98 @@ $subtotal.text(formatVND(sum));
     </script>
 @endsection --}}
 
+@section('script')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(function() {
+            // CSRF cho AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
+            const $checkAll = $('#checkAll');
+            const $subtotal = $('#subtotalAmount');
+            const $total = $('#totalAmount');
+
+            function $rowChecks() {
+                return $('.row-check');
+            }
+
+            function formatVND(num) {
+                try {
+                    return new Intl.NumberFormat('vi-VN').format(num);
+                } catch (e) {
+                    return (num + '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                }
+            }
+
+            function recalcTotals() {
+                let sum = 0;
+                $('.row-check:checked').each(function() {
+                    const $row = $(this).closest('tr');
+                    const val = parseInt($row.find('.row-total').data('total')) || 0;
+                    sum += val;
+                });
+                $subtotal.text(formatVND(sum));
+                $total.text(formatVND(sum));
+            }
+
+            function syncHeader() {
+                const $rows = $rowChecks();
+                const allChecked = $rows.length > 0 && $rows.filter(':checked').length === $rows.length;
+                $checkAll.prop('checked', allChecked);
+            }
+
+            // Gọi API cập nhật 1 item
+            function updateCartItem($checkbox) {
+                const url = $checkbox.data('update-url');
+                const is_check = $checkbox.is(':checked') ? 1 : 0;
+                if (!url) return;
+
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: {
+                        is_check: is_check
+                    },
+}).fail(function(xhr) {
+                    // Nếu lỗi, revert checkbox về trạng thái trước
+                    $checkbox.prop('checked', !is_check);
+                    syncHeader();
+                    recalcTotals();
+                    console.error('Update cart item failed:', xhr.responseText || xhr.statusText);
+                });
+            }
+
+            // Toggle tất cả
+            $checkAll.on('change', function() {
+                const checked = $(this).is(':checked');
+                $rowChecks().each(function() {
+                    const $cb = $(this);
+                    const prev = $cb.is(':checked');
+                    $cb.prop('checked', checked);
+                    if (prev !== checked) {
+                        updateCartItem($cb); // chỉ gọi API khi trạng thái thực sự thay đổi
+                    }
+                });
+                recalcTotals();
+            });
+
+            // Tick từng dòng
+            $(document).on('change', '.row-check', function() {
+                updateCartItem($(this));
+                syncHeader();
+                recalcTotals();
+            });
+
+            // Khởi tạo
+            // $rowChecks().prop('checked', true);
+            // $checkAll.prop('checked', true);
+            syncHeader();
+            recalcTotals();
+        });
+    </script>
+@endsection
 
